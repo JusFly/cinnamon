@@ -60,10 +60,14 @@ public class ControlPanel extends JPanel {
 		  }
 	}
 	
+	public JTextField getResponse() {
+		return response;
+	}
+	public JTextField getGuesstext() {
+		return guesstext;
+	}
 	private void updatePanel() {
 		whoseturn.setText(game.getWhosTurn().getName());
-		response.setText("Hello");
-		guesstext.setText("Guess");
 		game.rollDie();
 		
 	}

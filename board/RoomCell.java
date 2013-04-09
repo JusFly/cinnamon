@@ -104,7 +104,7 @@ public class RoomCell extends BoardCell {
 		int pixelModifier = 25;
 		int doorOffset = pixelModifier/doorFraction;
 		
-		g.setColor(Color.red);
+		g.setColor(Color.LIGHT_GRAY);
 		if (this.highlight) {
 			g.setColor(Color.GREEN);
 		}

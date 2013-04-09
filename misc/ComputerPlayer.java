@@ -14,8 +14,9 @@ import java.awt.Graphics;
 import java.awt.Color;
 
 public class ComputerPlayer extends Player {
-	
+
 	private char lastRoomVisited;
+	private Suggestion accusation;
 
 	public Suggestion createSuggestion(int row, int column, ArrayList<Card> deck, Board board) {
 		Suggestion suggestion = new Suggestion();
@@ -26,7 +27,7 @@ public class ComputerPlayer extends Player {
 		suggestion.setWeapon(findValidCard(deck, CardType.WEAPON));
 		return suggestion;
 	}
-	
+
 	public Card findValidCard(ArrayList<Card> deck, CardType type) {
 		ArrayList<Card> knownCards = this.getKnownCards();
 		for (Card x : deck) {
@@ -35,11 +36,11 @@ public class ComputerPlayer extends Player {
 			}
 		}
 		return null;
-		
+
 	}
-	
+
 	public BoardCell pickLocation(Set<BoardCell> targets) {
-	
+
 		for (BoardCell selection : targets) {
 			if (selection.isRoom()) {
 				RoomCell room = (RoomCell) selection;
@@ -55,7 +56,7 @@ public class ComputerPlayer extends Player {
 		return (BoardCell) targArr[random];
 	}
 
-	public void makeMove (Board board, int roll) {
+	public void makeMove (Board board, int roll, ClueGame game) {
 		board.startTargets(board.calcIndex(this.getRow(), this.getColumn()), roll);
 		System.out.println(this.getName() + " index " + board.calcIndex(this.getRow(), this.getColumn()) + " roll " + roll); //print
 		System.out.println("target size " + board.getTargets().size());
@@ -68,22 +69,45 @@ public class ComputerPlayer extends Player {
 				}
 			}
 		}
+		if(board.getCellAt(getRow(), getColumn()).isRoom()) {
+			// set flag for last room
+			RoomCell room = (RoomCell) board.getCellAt(getRow(), getColumn());
+			lastRoomVisited = room.getRoomClassifier();
+
+			// create a suggestion
+			Suggestion s = createSuggestion(getRow(), getColumn(), game.getDeck(), board);
+			Card disprove = game.handleSuggestion(s.getPerson().getName(), s.getRoom().getName(), s.getWeapon().getName(), this);
+
+			// update control panel
+			game.getControlPanel().getGuesstext().setText(s.getPerson().getName() + " " + s.getRoom().getName() + " " + s.getWeapon().getName());
+			if(disprove != null) {
+				game.getControlPanel().getResponse().setText(disprove.getName());
+			}
+			else {
+				game.getControlPanel().getResponse().setText("no response");
+				accusation = s;
+			}
+
+
+			// call disproveSuggestion
+		}
 		board.repaint();
-		
+
 	}
-	
+
 	public ComputerPlayer(String name, String color, int row, int column) {
 		super(name, color, row, column);
+		accusation = null;
 	}
 
 	public ComputerPlayer() {
 		super();
 	}
-	
+
 	public void updateSeen(Card seen) {
 		knownCards.add(seen);
 	}
-	
+
 	public void updateSeen(ArrayList<Card> seen) {
 		knownCards.addAll(seen);
 	}
@@ -95,5 +119,5 @@ public class ComputerPlayer extends Player {
 	public void setLastRoomVisited(char lastRoomVisited) {
 		this.lastRoomVisited = lastRoomVisited;
 	}
-	
+
 }

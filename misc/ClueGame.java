@@ -254,11 +254,11 @@ public class ClueGame extends JFrame{
 		}
 		return solution.checkSolution(person, weapon, room);
 	}
-	public Object handleSuggestion(String thePerson, String theRoom, String theWeapon, Player thePlayer) {
+	public Card handleSuggestion(String thePerson, String theRoom, String theWeapon, Player thePlayer) {
 		ArrayList<Player> thesePlayers = new ArrayList<Player>();
 		ArrayList<String> theseStrings = new ArrayList<String>();
 		ArrayList<Card> theseCards = new ArrayList<Card>();
-		Object answer = null;
+		Card answer = null;
 		theseStrings.add(theRoom);
 		theseStrings.add(theWeapon);
 		theseStrings.add(thePerson);
@@ -350,9 +350,13 @@ public class ClueGame extends JFrame{
 		controlPanel.getWhoseturn().setText(whosTurn.getName());
 		int roll = Integer.parseInt(rollDie());
 		controlPanel.getDietext().setText(String.valueOf(roll));
-		cpu.makeMove(board, roll);
+		cpu.makeMove(board, roll, this);
 	}
 	
+
+	public ControlPanel getControlPanel() {
+		return controlPanel;
+	}
 
 	public ArrayList<Player> getAllPlayers() {
 		return allPlayers;
@@ -375,7 +379,7 @@ public class ClueGame extends JFrame{
 	public static void main(String[] args) {
 		game = new ClueGame("legend.txt", "RoomLayout.csv", "players.txt", "weapons.txt");
 		game.setVisible(true);
-		JOptionPane.showMessageDialog(game, "You are Miss Scarlet, press Next Player to begin play", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(game, "You are Miss Scarlet, select a highlighted cell to begin play", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
 		game.startHumanTurn();
 		game.humanPlayer.makeMove(game.board);
 	}
