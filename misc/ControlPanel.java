@@ -13,6 +13,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import misc.SuggestDialog.SuggestType;
+
 import board.Board;
 
 
@@ -25,41 +27,45 @@ public class ControlPanel extends JPanel {
 	private JButton accusation;
 	private JTextField whoseturn;
 
-	
+
 
 	private JTextField response;
 	private JTextField dietext;
 	private JTextField guesstext;
 	private ClueGame game;
-	
+
 	public ControlPanel(ClueGame g) {
 		game = g;
 		createLayout();
 	}
-	
+
 	private class ButtonListener implements ActionListener {
-		  public void actionPerformed(ActionEvent e)
-		  {
-			  if(game.isHumanMustFinish()) {
+		public void actionPerformed(ActionEvent e)
+		{
+			if(e.getSource() == accusation) {
+				new SuggestDialog(SuggestType.ACCUSATION, game);
+			} else {
+				if(game.isHumanMustFinish()) {
 					JOptionPane.showMessageDialog(game, "You must finish your turn", "Invalid Move", JOptionPane.INFORMATION_MESSAGE);
-			  } else {
-				  for(int i = 0; i < game.getAllPlayers().size(); i++) {
-					  if(game.getAllPlayers().get(i).getName().equals(game.getWhosTurn().getName())) {
-						  game.setWhosTurn(game.getAllPlayers().get((i+1) % game.getAllPlayers().size()));
-						  break;
-					  }
-				  }
-				  if(game.getWhosTurn().equals(game.getHumanPlayer())) {
-					  game.startHumanTurn();
-				  } else {
-					  ComputerPlayer cpu = (ComputerPlayer) game.getWhosTurn();
-					  game.startComputerTurn(cpu);
-				  }
-				  updatePanel();
-			  }
-		  }
+				} else {
+					for(int i = 0; i < game.getAllPlayers().size(); i++) {
+						if(game.getAllPlayers().get(i).getName().equals(game.getWhosTurn().getName())) {
+							game.setWhosTurn(game.getAllPlayers().get((i+1) % game.getAllPlayers().size()));
+							break;
+						}
+					}
+					if(game.getWhosTurn().equals(game.getHumanPlayer())) {
+						game.startHumanTurn();
+					} else {
+						ComputerPlayer cpu = (ComputerPlayer) game.getWhosTurn();
+						game.startComputerTurn(cpu);
+					}
+					updatePanel();
+				}
+			}
+		}
 	}
-	
+
 	public JTextField getResponse() {
 		return response;
 	}
@@ -69,7 +75,7 @@ public class ControlPanel extends JPanel {
 	private void updatePanel() {
 		whoseturn.setText(game.getWhosTurn().getName());
 		game.rollDie();
-		
+
 	}
 	public void createLayout() {
 		response = new JTextField(10);
@@ -78,6 +84,7 @@ public class ControlPanel extends JPanel {
 		nextPlayer = new JButton("Next Player");
 		nextPlayer.addActionListener(new ButtonListener());
 		accusation = new JButton("Make an Accusation");
+		accusation.addActionListener(new ButtonListener());
 		JLabel turn = new JLabel("Whose turn?");
 		whoseturn = new JTextField(18);
 		whoseturn.setEditable(false);
@@ -92,9 +99,9 @@ public class ControlPanel extends JPanel {
 		add(dieRoll());
 		add(guess());
 		add(result());
-		
+
 	}
-	
+
 	private JPanel dieRoll() {
 		JPanel dieRoll = new JPanel();
 		JLabel label = new JLabel("Roll");
@@ -104,7 +111,7 @@ public class ControlPanel extends JPanel {
 		dieRoll.setBorder(new TitledBorder(new EtchedBorder(), "Die"));
 		return dieRoll;
 	}
-	
+
 	private JPanel guess() {
 		JPanel guess = new JPanel();
 		guesstext.setEditable(false);
@@ -112,7 +119,7 @@ public class ControlPanel extends JPanel {
 		guess.setBorder(new TitledBorder(new EtchedBorder(), "Guess"));
 		return guess;
 	}
-	
+
 	private JPanel result() {
 		JPanel result = new JPanel();
 		JLabel resultLabel = new JLabel("Response");
@@ -122,7 +129,7 @@ public class ControlPanel extends JPanel {
 		result.setBorder(new TitledBorder(new EtchedBorder(), "Guess Result"));
 		return result;
 	}
-	
+
 	public JTextField getDietext() {
 		return dietext;
 	}
@@ -137,5 +144,5 @@ public class ControlPanel extends JPanel {
 	public void setWhoseturn(JTextField whoseturn) {
 		this.whoseturn = whoseturn;
 	}
-	
+
 }
