@@ -86,8 +86,6 @@ public class Board extends JPanel implements MouseListener {
 
 		loadConfigFiles();
 		calcAdjacencies();
-		//MouseListener mouse = new CellListener();
-		//addMouseListener(mouse);
 		
 	}
 	@Override
@@ -134,16 +132,10 @@ public class Board extends JPanel implements MouseListener {
 	public void mouseReleased(MouseEvent arg0) {}
 
 
-	public boolean containsClick (int mouseX, int mouseY, int rectX, int rectY, int width, int height) {
-		Rectangle rect = new Rectangle(rectX,rectY,width,height);
-		if(rect.contains(new Point(mouseX, mouseY)))
-			return true;
-		return false;
-	}
+
 	public void highlightTargets(int row, int column) {
 		this.startTargets(this.calcIndex(row,column), dieRoll);
 		for (BoardCell x : this.getTargets()) {
-			//x.draw(this.getGraphics(), this, this.calcIndex(row, column), true);
 			x.highlight = true;
 			this.repaint();
 		}
