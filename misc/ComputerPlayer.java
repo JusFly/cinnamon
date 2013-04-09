@@ -57,7 +57,7 @@ public class ComputerPlayer extends Player {
 	}
 
 	public void makeMove (Board board, int roll, ClueGame game) {
-		if(!accusation.equals(null)) {
+		if(!(accusation == null)) {
 			makeAccusation(game);
 		}
 		else {
