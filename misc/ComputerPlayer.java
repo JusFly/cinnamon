@@ -57,6 +57,10 @@ public class ComputerPlayer extends Player {
 	}
 
 	public void makeMove (Board board, int roll, ClueGame game) {
+		if(!accusation.equals(null)) {
+			makeAccusation(game);
+		}
+		else {
 		board.startTargets(board.calcIndex(this.getRow(), this.getColumn()), roll);
 		System.out.println(this.getName() + " index " + board.calcIndex(this.getRow(), this.getColumn()) + " roll " + roll); //print
 		System.out.println("target size " + board.getTargets().size());
@@ -77,7 +81,13 @@ public class ComputerPlayer extends Player {
 			// create a suggestion
 			Suggestion s = createSuggestion(getRow(), getColumn(), game.getDeck(), board);
 			Card disprove = game.handleSuggestion(s.getPerson().getName(), s.getRoom().getName(), s.getWeapon().getName(), this);
-
+			//dave
+			if (!this.getKnownCards().contains(disprove)) {
+				this.getKnownCards().add(disprove);
+			}
+			//dave
+			System.out.println("number of known cards" + this.knownCards.size());
+			
 			// update control panel
 			game.getControlPanel().getGuesstext().setText(s.getPerson().getName() + " " + s.getRoom().getName() + " " + s.getWeapon().getName());
 			if(disprove != null) {
@@ -92,7 +102,16 @@ public class ComputerPlayer extends Player {
 			// call disproveSuggestion
 		}
 		board.repaint();
-
+		}
+	}
+	
+	public void makeAccusation(ClueGame game) {
+		//display computers accusation and if it is correct.
+		System.out.println("accusation" + accusation.getPerson() + " " + accusation.getRoom() + " " + accusation.getWeapon());
+		Solution solution = new Solution(accusation.getPerson().getName(), accusation.getWeapon().getName(), accusation.getRoom().getName());
+		if (game.checkAccusation(solution)) {
+			
+		}
 	}
 
 	public ComputerPlayer(String name, String color, int row, int column) {

@@ -25,6 +25,14 @@ public class Suggestion {
 		this.weapon = weapon;
 	}
 	
-	
+	public boolean checkSolution(String person, String weapon, String room) {
+		if(!this.person.equals(person))
+			return false;
+		if(!this.weapon.equals(weapon))
+			return false;
+		if(!this.room.equals(room))
+			return false;
+		return true;
+	}
 	
 }

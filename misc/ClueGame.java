@@ -234,6 +234,8 @@ public class ClueGame extends JFrame{
 				i++;
 			} else if(i > 0) {
 				cpuPlayers.get(i - 1).giveCard(a);
+				//dave
+				cpuPlayers.get(i-1).getKnownCards().add(a);
 				i++;
 			}
 			if(i > cpuPlayers.size())
@@ -255,6 +257,16 @@ public class ClueGame extends JFrame{
 		return solution.checkSolution(person, weapon, room);
 	}
 	public Card handleSuggestion(String thePerson, String theRoom, String theWeapon, Player thePlayer) {
+		//lame hack forLoop dave
+		for (Player x : allPlayers) {
+			if (x.getName().equals(thePerson)) {
+				x.setRow(thePlayer.getRow());
+				x.setColumn(thePlayer.getColumn());
+			}
+		}
+		
+		
+		
 		ArrayList<Player> thesePlayers = new ArrayList<Player>();
 		ArrayList<String> theseStrings = new ArrayList<String>();
 		ArrayList<Card> theseCards = new ArrayList<Card>();
@@ -280,15 +292,19 @@ public class ClueGame extends JFrame{
 		}
 		return answer;
 	}
+	
 	public int getDeckWeaponSize() {
 		return getRoomSizeCardType(CardType.WEAPON);
 	}
+	
 	public int getDeckPlayerSize() {
 		return getRoomSizeCardType(CardType.PERSON);
 	}
+	
 	public int getDeckRoomSize() {
 		return getRoomSizeCardType(CardType.ROOM);
 	}
+	
 	private int getRoomSizeCardType(CardType cardType) {
 		int rooms = 0;
 		for(Card a : deck) {
@@ -297,43 +313,56 @@ public class ClueGame extends JFrame{
 		}
 		return rooms;
 	}
+	
 	public ArrayList<Card> getDeck() {
 		return deck;
 	}
+	
 	public void setDeck(ArrayList<Card> deck) {
 		this.deck.clear();
 		this.deck = deck;
 	}
+	
 	public ArrayList<Card> getClosetCards() {
 		return closetCards;
 	}
+	
 	public void setClosetCards(ArrayList<Card> closetCards) {
 		this.closetCards = closetCards;
 	}
+	
 	public ArrayList<ComputerPlayer> getCpuPlayers() {
 		return cpuPlayers;
 	}
+	
 	public void setCpuPlayers(ArrayList<ComputerPlayer> cpuPlayers) {
 		this.cpuPlayers = cpuPlayers;
 	}
+	
 	public HumanPlayer getHumanPlayer() {
 		return humanPlayer;
 	}
+	
 	public void setHumanPlayer(HumanPlayer bob) {
 		humanPlayer = bob;
 	}
+	
 	public Player getWhosTurn() {
 		return whosTurn;
 	}
+	
 	public void setWhosTurn(Player whosTurn) {
 		this.whosTurn = whosTurn;
 	}
+	
 	public void addPlayer(ComputerPlayer player) {
 		cpuPlayers.add(player);
 	}
+	
 	public void addPlayer(HumanPlayer player) {
 		humanPlayer = player;
 	}
+	
 	public void resetPlayers() {
 		humanPlayer = null;
 		cpuPlayers = new ArrayList<ComputerPlayer>();
