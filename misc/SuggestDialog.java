@@ -22,6 +22,7 @@ public class SuggestDialog extends JDialog {
 	JComboBox<String> weapon;
 	
 	public SuggestDialog(SuggestType t, ClueGame g) {
+		super(g,"",true);
 		room = new JComboBox<String>();
 		person = new JComboBox<String>();
 		weapon = new JComboBox<String>();
@@ -93,6 +94,7 @@ public class SuggestDialog extends JDialog {
 				game.checkAccusation(s);
 			}
 			setVisible(false);
+			dispose();
 		}
 		
 	}
