@@ -13,6 +13,8 @@ import board.RoomCell;
 import java.awt.Graphics;
 import java.awt.Color;
 
+import javax.swing.JOptionPane;
+
 public class ComputerPlayer extends Player {
 
 	private char lastRoomVisited;
@@ -62,8 +64,6 @@ public class ComputerPlayer extends Player {
 		}
 		else {
 			board.startTargets(board.calcIndex(this.getRow(), this.getColumn()), roll);
-			System.out.println(this.getName() + " index " + board.calcIndex(this.getRow(), this.getColumn()) + " roll " + roll); //print
-			System.out.println("target size " + board.getTargets().size());
 			BoardCell choice = pickLocation(board.getTargets());
 			for(int x = 0; x < board.getNumColumns(); x++) {
 				for(int y = 0; y < board.getNumRows(); y++) {
@@ -82,12 +82,7 @@ public class ComputerPlayer extends Player {
 				Suggestion s = createSuggestion(getRow(), getColumn(), game.getDeck(), board);
 				// call disproveSuggestion
 				Card disprove = game.handleSuggestion(s.getPerson().getName(), s.getRoom().getName(), s.getWeapon().getName(), this);
-				//dave
-				if (!this.getKnownCards().contains(disprove)) {
-					this.getKnownCards().add(disprove);
-				}
-				//dave
-				System.out.println("number of known cards" + this.knownCards.size());
+
 
 				// update control panel
 				game.getControlPanel().getGuesstext().setText(s.getPerson().getName() + " " + s.getRoom().getName() + " " + s.getWeapon().getName());
@@ -107,10 +102,10 @@ public class ComputerPlayer extends Player {
 
 	public void makeAccusation(ClueGame game) {
 		//display computers accusation and if it is correct.
-		System.out.println("accusation" + accusation.getPerson() + " " + accusation.getRoom() + " " + accusation.getWeapon());
+		//System.out.println("accusation" + accusation.getPerson() + " " + accusation.getRoom() + " " + accusation.getWeapon());
 		Solution solution = new Solution(accusation.getPerson().getName(), accusation.getWeapon().getName(), accusation.getRoom().getName());
 		if (game.checkAccusation(solution)) {
-
+			JOptionPane.showMessageDialog(game, "Computer wins! It was " + accusation.getPerson().getName() + " in the " + accusation.getRoom().getName() + " with the " + accusation.getWeapon().getName() + ". The game will now exit.", "Game Over", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 

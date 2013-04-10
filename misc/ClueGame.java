@@ -369,6 +369,7 @@ public class ClueGame extends JFrame{
 	}
 	
 	public void startHumanTurn() {
+		humanPlayer.setCanMakeAccusation(true);
 		controlPanel.getDietext().setText(rollDie());
 		controlPanel.getWhoseturn().setText(humanPlayer.getName());
 		board.setHumanMustFinish(true);
@@ -408,7 +409,6 @@ public class ClueGame extends JFrame{
 	public static void main(String[] args) {
 		game = new ClueGame("legend.txt", "RoomLayout.csv", "players.txt", "weapons.txt");
 		game.setVisible(true);
-		System.out.println(game.getHumanPlayer().isCanMakeAccusation());//brandon
 		JOptionPane.showMessageDialog(game, "You are Miss Scarlet, select a highlighted cell to begin play", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
 		game.startHumanTurn();
 		game.humanPlayer.makeMove(game.board);

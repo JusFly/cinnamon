@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 
 public class SuggestDialog extends JDialog {
@@ -20,18 +21,20 @@ public class SuggestDialog extends JDialog {
 	JComboBox<String> room;
 	JComboBox<String> person;
 	JComboBox<String> weapon;
-	
+	SuggestType t;
+
 	public SuggestDialog(SuggestType t, ClueGame g) {
 		super(g,"",true);
 		room = new JComboBox<String>();
 		person = new JComboBox<String>();
 		weapon = new JComboBox<String>();
 		game = g;
+		this.t = t;
 		createLayout(t, g);
 		setSize(new Dimension(300,200));
 		setVisible(true);
 	}
-	
+
 	public void createLayout(SuggestType t, ClueGame g) {
 		setLayout(new GridLayout(4,2));
 		add(new JLabel("Room"));
@@ -73,13 +76,13 @@ public class SuggestDialog extends JDialog {
 		add(submit());
 		add(cancel());
 	}
-	
+
 	public JButton submit() {
 		submit = new JButton("Submit");
 		submit.addActionListener(new ButtonListener());
 		return submit;
 	}
-	
+
 	public JButton cancel() {
 		cancel = new JButton("Cancel");
 		cancel.addActionListener(new ButtonListener());
@@ -91,20 +94,27 @@ public class SuggestDialog extends JDialog {
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == submit) {
 				Card disprove = game.handleSuggestion(person.getSelectedItem().toString(), room.getSelectedItem().toString(), weapon.getSelectedItem().toString(), game.getHumanPlayer());
-				game.getControlPanel().getGuesstext().setText(person.getSelectedItem().toString() + " " + room.getSelectedItem().toString() + " " + weapon.getSelectedItem().toString());
-				if(disprove != null) {
-					game.getControlPanel().getResponse().setText(disprove.getName());
-				}
-				else {
-					game.getControlPanel().getResponse().setText("no response");
-				}
 				Solution s = new Solution(person.getSelectedItem().toString(), weapon.getSelectedItem().toString(), room.getSelectedItem().toString());
-				game.checkAccusation(s);
+				if(t == SuggestType.SUGGESTION) { 
+					game.getControlPanel().getGuesstext().setText(person.getSelectedItem().toString() + " " + room.getSelectedItem().toString() + " " + weapon.getSelectedItem().toString());
+					if(disprove != null) {
+						game.getControlPanel().getResponse().setText(disprove.getName());
+					}
+					else {
+						game.getControlPanel().getResponse().setText("no response");
+					}
+				}
+				if(game.checkAccusation(s) && t == SuggestType.ACCUSATION) {
+					JOptionPane.showMessageDialog(game, "You are correct! Game will now end.", "You Win", JOptionPane.INFORMATION_MESSAGE);
+					System.exit(0);
+				} else if(!game.checkAccusation(s) && t == SuggestType.ACCUSATION) {
+					JOptionPane.showMessageDialog(game, "That is not correct.", "Incorrect Guess", JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 			setVisible(false);
 			dispose();
 		}
-		
+
 	}
-	
+
 }

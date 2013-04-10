@@ -104,7 +104,6 @@ public class Board extends JPanel implements MouseListener {
 		for(BoardCell c : targets) {
 			if(c.containsClick(event.getX(), event.getY())) {
 				HumanPlayer p = (HumanPlayer) humanPlayer;
-				System.out.println("set false"); //brandon
 				p.setCanMakeAccusation(false);
 				humanPlayer.setRow(c.getRow());
 				humanPlayer.setColumn(c.getColumn());
