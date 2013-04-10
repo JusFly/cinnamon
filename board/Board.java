@@ -60,6 +60,7 @@ public class Board extends JPanel implements MouseListener {
 	private int numColumns;
 	private boolean highlight;
 	private int dieRoll;
+	private int pixelModifier;
 
 	// Filepaths for the configuration files
 	private String csvFilepath, legendFilepath;
@@ -102,7 +103,7 @@ public class Board extends JPanel implements MouseListener {
 	public void mouseClicked(MouseEvent event) {
 		boolean badCell = true;
 		for(BoardCell c : targets) {
-			if(c.containsClick(event.getX(), event.getY())) {
+			if(c.containsClick(event.getX(), event.getY(), this)) {
 				HumanPlayer p = (HumanPlayer) humanPlayer;
 				p.setCanMakeAccusation(false);
 				humanPlayer.setRow(c.getRow());
@@ -154,6 +155,9 @@ public class Board extends JPanel implements MouseListener {
 			x.highlight = true;
 			this.repaint();
 		}
+		//System.out.println(pixelModifier);
+		//int pixelModifier = Math.min(this.size().height/this.getNumRows(), this.size().width/this.getNumColumns());
+		setSize(pixelModifier*numColumns, pixelModifier*numRows);
 	}
 
 	public void paintComponent(Graphics g) {
@@ -164,7 +168,7 @@ public class Board extends JPanel implements MouseListener {
 		for (Player y: players) {
 			y.draw(g, this);
 		}
-
+		setSize(pixelModifier*numColumns, pixelModifier*numRows);
 
 	}
 
@@ -411,6 +415,14 @@ public class Board extends JPanel implements MouseListener {
 
 	public void setDieRoll(int dieRoll) {
 		this.dieRoll = dieRoll;
+	}
+
+	public int getPixelModifier() {
+		return pixelModifier;
+	}
+
+	public void setPixelModifier(int pixelModifier) {
+		this.pixelModifier = pixelModifier;
 	}
 	
 }

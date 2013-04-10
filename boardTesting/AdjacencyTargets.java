@@ -68,9 +68,9 @@ public class AdjacencyTargets {
 	@Test
 	public void enterAtDoor2() {
 		LinkedList<Integer> testList = newBoard.getAdjList(newBoard.calcIndex(1, 6)); // W between CR and RL
-		Assert.assertEquals(4, testList.size());
+		Assert.assertEquals(3, testList.size());
 		Assert.assertTrue(testList.contains(newBoard.calcIndex(1, 5))); // move into conservatory
-		Assert.assertTrue(testList.contains(newBoard.calcIndex(1, 7))); // move into billiard room
+		//Assert.assertTrue(testList.contains(newBoard.calcIndex(1, 7))); // move into billiard room
 		Assert.assertTrue(testList.contains(newBoard.calcIndex(0, 6))); // move up on walkway
 		Assert.assertTrue(testList.contains(newBoard.calcIndex(2, 6))); // move down on walkway
 	}
@@ -178,8 +178,8 @@ public class AdjacencyTargets {
 	public void targetLeave1() {
 		newBoard.startTargets(newBoard.calcIndex(1,5), 2);
 		Set<BoardCell> testTargets = newBoard.getTargets();
-		Assert.assertEquals(3,testTargets.size());
-		Assert.assertTrue(testTargets.contains(newBoard.getCellAt(1,7)));
+		Assert.assertEquals(2,testTargets.size());
+		//Assert.assertTrue(testTargets.contains(newBoard.getCellAt(1,7)));
 		Assert.assertTrue(testTargets.contains(newBoard.getCellAt(0,6)));
 		Assert.assertTrue(testTargets.contains(newBoard.getCellAt(2,6)));
 	}

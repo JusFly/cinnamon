@@ -164,8 +164,8 @@ public class Player {
 	}
 	
 	public void draw(Graphics g, Board b) {
-		//int pixelModifier = Math.min(b.getSize().width/b.getNumColumns(), b.getSize().height/b.getNumRows());
-		int pixelModifier = 25;
+		int pixelModifier = Math.min(b.getSize().width/b.getNumColumns(), b.getSize().height/b.getNumRows());
+		//int pixelModifier = 25;
 		setColor(g);
 		g.fillRoundRect(column*pixelModifier, row*pixelModifier, pixelModifier, pixelModifier, pixelModifier, pixelModifier);
 	}

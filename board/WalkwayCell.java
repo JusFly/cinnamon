@@ -27,7 +27,8 @@ public class WalkwayCell extends BoardCell {
 
 	@Override
 	public void draw(Graphics g, Board b) {
-		int pixelModifier = 25;
+		int pixelModifier = Math.min(b.size().width/b.getNumColumns(), b.size().height/b.getNumRows());
+		//int pixelModifier = 25;
 		g.setColor(Color.yellow);
 		if (this.highlight) {
 			g.setColor(Color.GREEN);
