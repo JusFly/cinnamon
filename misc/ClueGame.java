@@ -60,7 +60,7 @@ public class ClueGame extends JFrame{
 		cpuPlayers = new ArrayList<ComputerPlayer>();
 		allPlayers = new ArrayList<Player>();
 		humanPlayer = new HumanPlayer();
-		board = new Board(layout, legend);
+		board = new Board(layout, legend, this);
 		notes = new DetectiveNotes();
 		controlPanel = new ControlPanel(this);
 		loadConfigFiles();
@@ -408,6 +408,7 @@ public class ClueGame extends JFrame{
 	public static void main(String[] args) {
 		game = new ClueGame("legend.txt", "RoomLayout.csv", "players.txt", "weapons.txt");
 		game.setVisible(true);
+		System.out.println(game.getHumanPlayer().isCanMakeAccusation());//brandon
 		JOptionPane.showMessageDialog(game, "You are Miss Scarlet, select a highlighted cell to begin play", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
 		game.startHumanTurn();
 		game.humanPlayer.makeMove(game.board);

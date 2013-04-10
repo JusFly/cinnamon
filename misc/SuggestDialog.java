@@ -90,6 +90,14 @@ public class SuggestDialog extends JDialog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == submit) {
+				Card disprove = game.handleSuggestion(person.getSelectedItem().toString(), room.getSelectedItem().toString(), weapon.getSelectedItem().toString(), game.getHumanPlayer());
+				game.getControlPanel().getGuesstext().setText(person.getSelectedItem().toString() + " " + room.getSelectedItem().toString() + " " + weapon.getSelectedItem().toString());
+				if(disprove != null) {
+					game.getControlPanel().getResponse().setText(disprove.getName());
+				}
+				else {
+					game.getControlPanel().getResponse().setText("no response");
+				}
 				Solution s = new Solution(person.getSelectedItem().toString(), weapon.getSelectedItem().toString(), room.getSelectedItem().toString());
 				game.checkAccusation(s);
 			}

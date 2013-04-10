@@ -61,56 +61,56 @@ public class ComputerPlayer extends Player {
 			makeAccusation(game);
 		}
 		else {
-		board.startTargets(board.calcIndex(this.getRow(), this.getColumn()), roll);
-		System.out.println(this.getName() + " index " + board.calcIndex(this.getRow(), this.getColumn()) + " roll " + roll); //print
-		System.out.println("target size " + board.getTargets().size());
-		BoardCell choice = pickLocation(board.getTargets());
-		for(int x = 0; x < board.getNumColumns(); x++) {
-			for(int y = 0; y < board.getNumRows(); y++) {
-				if (board.getCellAt(y, x).equals(choice)) {
-					this.setColumn(x);
-					this.setRow(y);
+			board.startTargets(board.calcIndex(this.getRow(), this.getColumn()), roll);
+			System.out.println(this.getName() + " index " + board.calcIndex(this.getRow(), this.getColumn()) + " roll " + roll); //print
+			System.out.println("target size " + board.getTargets().size());
+			BoardCell choice = pickLocation(board.getTargets());
+			for(int x = 0; x < board.getNumColumns(); x++) {
+				for(int y = 0; y < board.getNumRows(); y++) {
+					if (board.getCellAt(y, x).equals(choice)) {
+						this.setColumn(x);
+						this.setRow(y);
+					}
 				}
 			}
-		}
-		if(board.getCellAt(getRow(), getColumn()).isRoom()) {
-			// set flag for last room
-			RoomCell room = (RoomCell) board.getCellAt(getRow(), getColumn());
-			lastRoomVisited = room.getRoomClassifier();
+			if(board.getCellAt(getRow(), getColumn()).isRoom()) {
+				// set flag for last room
+				RoomCell room = (RoomCell) board.getCellAt(getRow(), getColumn());
+				lastRoomVisited = room.getRoomClassifier();
 
-			// create a suggestion
-			Suggestion s = createSuggestion(getRow(), getColumn(), game.getDeck(), board);
-			Card disprove = game.handleSuggestion(s.getPerson().getName(), s.getRoom().getName(), s.getWeapon().getName(), this);
-			//dave
-			if (!this.getKnownCards().contains(disprove)) {
-				this.getKnownCards().add(disprove);
-			}
-			//dave
-			System.out.println("number of known cards" + this.knownCards.size());
-			
-			// update control panel
-			game.getControlPanel().getGuesstext().setText(s.getPerson().getName() + " " + s.getRoom().getName() + " " + s.getWeapon().getName());
-			if(disprove != null) {
-				game.getControlPanel().getResponse().setText(disprove.getName());
-			}
-			else {
-				game.getControlPanel().getResponse().setText("no response");
-				accusation = s;
-			}
+				// create a suggestion
+				Suggestion s = createSuggestion(getRow(), getColumn(), game.getDeck(), board);
+				// call disproveSuggestion
+				Card disprove = game.handleSuggestion(s.getPerson().getName(), s.getRoom().getName(), s.getWeapon().getName(), this);
+				//dave
+				if (!this.getKnownCards().contains(disprove)) {
+					this.getKnownCards().add(disprove);
+				}
+				//dave
+				System.out.println("number of known cards" + this.knownCards.size());
+
+				// update control panel
+				game.getControlPanel().getGuesstext().setText(s.getPerson().getName() + " " + s.getRoom().getName() + " " + s.getWeapon().getName());
+				if(disprove != null) {
+					game.getControlPanel().getResponse().setText(disprove.getName());
+				}
+				else {
+					game.getControlPanel().getResponse().setText("no response");
+					accusation = s;
+				}
 
 
-			// call disproveSuggestion
-		}
-		board.repaint();
+			}
+			board.repaint();
 		}
 	}
-	
+
 	public void makeAccusation(ClueGame game) {
 		//display computers accusation and if it is correct.
 		System.out.println("accusation" + accusation.getPerson() + " " + accusation.getRoom() + " " + accusation.getWeapon());
 		Solution solution = new Solution(accusation.getPerson().getName(), accusation.getWeapon().getName(), accusation.getRoom().getName());
 		if (game.checkAccusation(solution)) {
-			
+
 		}
 	}
 

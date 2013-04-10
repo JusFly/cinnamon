@@ -29,7 +29,11 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import misc.ClueGame;
+import misc.HumanPlayer;
 import misc.Player;
+import misc.SuggestDialog;
+import misc.SuggestDialog.SuggestType;
 
 // Board class body
 
@@ -66,10 +70,16 @@ public class Board extends JPanel implements MouseListener {
 	private Set<BoardCell> targets;
 	private Player humanPlayer;
 	private boolean humanMustFinish;
+	private ClueGame game;
 
 	// Default constructor for board. Simply initializes the values, nothing else
 	public Board() {
 		initialize();
+	}
+	
+	public Board(String csv, String legend, ClueGame game) {
+		this(csv, legend);
+		this.game = game;
 	}
 
 	// Parameterized constructor, sets all the fields of board using the configuration files
@@ -93,8 +103,14 @@ public class Board extends JPanel implements MouseListener {
 		boolean badCell = true;
 		for(BoardCell c : targets) {
 			if(c.containsClick(event.getX(), event.getY())) {
+				HumanPlayer p = (HumanPlayer) humanPlayer;
+				System.out.println("set false"); //brandon
+				p.setCanMakeAccusation(false);
 				humanPlayer.setRow(c.getRow());
 				humanPlayer.setColumn(c.getColumn());
+				if(c.isRoom()) {
+					new SuggestDialog(SuggestType.SUGGESTION, game);
+				}
 				repaint();
 
 				unHighlightTargets();

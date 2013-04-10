@@ -42,25 +42,27 @@ public class ControlPanel extends JPanel {
 	private class ButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e)
 		{
-			if(e.getSource() == accusation) {
+			if(e.getSource() == accusation && game.getHumanPlayer().isCanMakeAccusation()) {
 				new SuggestDialog(SuggestType.ACCUSATION, game);
-			} else {
+			} else if(e.getSource() == accusation && !game.getHumanPlayer().isCanMakeAccusation()) {
+				JOptionPane.showMessageDialog(game, "Not your turn", "Error", JOptionPane.ERROR_MESSAGE);
+			} else if(e.getSource() == nextPlayer) {
 				if(game.isHumanMustFinish()) {
 					JOptionPane.showMessageDialog(game, "You must finish your turn", "Invalid Move", JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					for(int i = 0; i < game.getAllPlayers().size(); i++) {
-						if(game.getAllPlayers().get(i).getName().equals(game.getWhosTurn().getName())) {
-							game.setWhosTurn(game.getAllPlayers().get((i+1) % game.getAllPlayers().size()));
-							break;
+						for(int i = 0; i < game.getAllPlayers().size(); i++) {
+							if(game.getAllPlayers().get(i).getName().equals(game.getWhosTurn().getName())) {
+								game.setWhosTurn(game.getAllPlayers().get((i+1) % game.getAllPlayers().size()));
+								break;
+							}
 						}
-					}
-					if(game.getWhosTurn().equals(game.getHumanPlayer())) {
-						game.startHumanTurn();
-					} else {
-						ComputerPlayer cpu = (ComputerPlayer) game.getWhosTurn();
-						game.startComputerTurn(cpu);
-					}
-					updatePanel();
+						if(game.getWhosTurn().equals(game.getHumanPlayer())) {
+							game.startHumanTurn();
+						} else {
+							ComputerPlayer cpu = (ComputerPlayer) game.getWhosTurn();
+							game.startComputerTurn(cpu);
+						}
+						updatePanel();
 				}
 			}
 		}
